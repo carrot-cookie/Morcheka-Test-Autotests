@@ -1,0 +1,35 @@
+plugins {
+    id 'java'
+    id 'application'
+    id "com.github.erdi.webdriver-binaries" version "2.4"
+}
+
+mainClassName = "org.example.Autotests"
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+// Сюда можно добавить любой другой драйвер
+webdriverBinaries {
+    configureTask(run)
+    geckodriver '0.29.0'
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'info.picocli:picocli:4.6.1'
+    implementation 'org.seleniumhq.selenium:selenium-java:3.141.59'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+run {
+    args()
+}
