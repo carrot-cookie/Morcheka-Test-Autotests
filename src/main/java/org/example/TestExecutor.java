@@ -12,7 +12,7 @@ import java.util.List;
 
 public class TestExecutor {
     private List<SeleniumTest> seleniumTests = new LinkedList<>();
-    private WebDriver webDriver = new FirefoxDriver();
+    private final WebDriver webDriver = new FirefoxDriver();
 
     private final String url;
     private final String login;
@@ -31,7 +31,7 @@ public class TestExecutor {
             executeTests();
         } catch (NotFoundException | AssertionError e) {
             e.printStackTrace();
-            webDriver.close();
+//            webDriver.close();
             System.exit(-1);
         }
         webDriver.close();
@@ -48,6 +48,14 @@ public class TestExecutor {
 
     private void executeTests() throws NotFoundException, AssertionError {
         for (SeleniumTest test: seleniumTests) {
+            synchronized (webDriver)
+            {
+                try {
+                    webDriver.wait(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
             test.executeTest(webDriver);
             webDriver.get(webDriver.getCurrentUrl());
         }
